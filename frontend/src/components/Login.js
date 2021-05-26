@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 class Login extends Component {
-  state = { emailId: "", password: "" };
+  state = { email: "", password: "", invalid: false };
 
   handleChange = (event) => {
     this.setState({
@@ -12,23 +12,38 @@ class Login extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    // const loginResponse = await axios.post(
-    //   "https://608d1c869f42b20017c3e804.mockapi.io/api/users",
-    //   {
-    //     email: this.state.email,
-    //     password: this.state.password,
-    //   }
-    // );
-    const loginResponse = await axios.get(
-      "https://608d1c869f42b20017c3e804.mockapi.io/api/users/1"
+    const loginResponse = await axios.post(
+      "https://happyworkplace.herokuapp.com/login",
+      {
+        emailId: this.state.email,
+        password: this.state.password,
+      }
     );
     if (loginResponse.status === 200) {
-      sessionStorage.setItem("token", JSON.stringify(loginResponse.data.id));
+      sessionStorage.setItem(
+        "token",
+        JSON.stringify(loginResponse.data.user_id)
+      );
       sessionStorage.setItem("email", JSON.stringify(loginResponse.data.email));
       sessionStorage.setItem("name", JSON.stringify(loginResponse.data.name));
-      sessionStorage.setItem("role", JSON.stringify(loginResponse.data.role));
-      window.location.pathname = "/home";
+      sessionStorage.setItem(
+        "role",
+        JSON.stringify(loginResponse.data.roles.role_id)
+      );
+      window.location.reload();
+    } else {
+      this.setState({ invalid: true });
     }
+    // const loginResponse = await axios.get(
+    //   "https://608d1c869f42b20017c3e804.mockapi.io/api/users/1"
+    // );
+    // if (loginResponse.status === 200) {
+    //   sessionStorage.setItem("token", JSON.stringify(loginResponse.data.id));
+    //   sessionStorage.setItem("email", JSON.stringify(loginResponse.data.email));
+    //   sessionStorage.setItem("name", JSON.stringify(loginResponse.data.name));
+    //   sessionStorage.setItem("role", JSON.stringify(loginResponse.data.role));
+    //   window.location.pathname = "/home";
+    // }
   };
 
   render() {
@@ -77,6 +92,7 @@ class Login extends Component {
               </div>
             </div>
           </form>
+          {this.state.invalid ? <div>Invalid Username or password</div> : ""}
         </div>
       </div>
     );
