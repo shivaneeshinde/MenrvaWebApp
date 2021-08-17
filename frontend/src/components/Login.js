@@ -54,7 +54,7 @@ class Login extends Component {
       >
         <div className="column">
           <h2 className="ui teal image header">
-            <div className="content">Login to Workplace Portal</div>
+            <div className="content">Login to Menrva Portal</div>
           </h2>
           <form className="ui large form">
             <div className="ui stacked segment">
