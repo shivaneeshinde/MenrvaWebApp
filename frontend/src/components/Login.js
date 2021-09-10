@@ -13,7 +13,7 @@ class Login extends Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const loginResponse = await axios.post(
-      "https://menrvahealthapp.herokuapp.com/",
+      "https://menrvahealthapp.herokuapp.com/login",
       {
         emailId: this.state.email,
         password: this.state.password,
